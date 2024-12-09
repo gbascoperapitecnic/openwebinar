@@ -1,15 +1,17 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 
 import PokemonList from '../components/PokemonList'
 import PokemonDetails from '../components/PokemonDetails'
 import PokemonDetails2 from '../components/PokemonDetails2'
 import { Navigate } from 'react-router-dom'
+import { UserContext } from '../context/user.context'
 
 export default function PokemonsPage() {
     
-  const [hasAccess, setAccess]  = useState(true)
+//   const [hasAccess, setAccess]  = useState(true)
+  const {user} = useContext(UserContext)
 
-  if (!hasAccess) {
+  if (!user.isLogged) {
     return <Navigate to={"/error"}/>
   }
 

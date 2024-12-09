@@ -1,8 +1,5 @@
 import { useEffect, useState } from 'react'
 
-import PokemonList from '../components/PokemonList'
-import PokemonDetails from '../components/PokemonDetails'
-import PokemonDetails2 from '../components/PokemonDetails2'
 import { useNavigate, useParams } from 'react-router-dom'
 import { MoveLeft, MoveRight } from 'lucide-react';
 
