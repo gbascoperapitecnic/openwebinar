@@ -3,7 +3,7 @@ import GetForm from "./GetForm";
 import PokemonCard from "./PokemonCard";
 import { useContext, useEffect, useState } from 'react'
 
-export default function PokemonList({handleSelected}) {
+export default function PokemonList({handleSelected, handleSelected2}) {
 
   const {pokemons, setPokemons} = useContext(PokemonContext)
   
@@ -11,7 +11,7 @@ export default function PokemonList({handleSelected}) {
   const [to, setTo] = useState(10)
 
   // useEffect(()=>{
-  //   getPokemons(10)
+  //   getPokemons(1, 10)
   // }, [])
 
   //funcion que hace la peticion del pokemon a la api
@@ -51,6 +51,7 @@ export default function PokemonList({handleSelected}) {
             key={pokemon.id}
             pokemon={pokemon}
             handleSelected={handleSelected}
+            handleSelected2={handleSelected2}
           />
         )
       }
