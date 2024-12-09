@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { Link } from "react-router-dom";
 
 export default function GetForm({getPokemons, searchPokemon}) {
 
@@ -57,6 +58,8 @@ export default function GetForm({getPokemons, searchPokemon}) {
 
                 <button className="bg-slate-700 text-white px-4 rounded-full w-fit mx-auto">Enviar</button>
             </form>
+
+            <Link to="/pokemons/1" className="border w-fit py-2 px-5 rounded-md mx-auto">List</Link>
         </div>
     )
 }
