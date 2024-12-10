@@ -1,7 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import MovieCard from '../components/MovieCard';
 import { ArrowLeftFromLine, ArrowRightFromLine, MoveLeftIcon, MoveRightIcon } from 'lucide-react';
 import { Link, useNavigate, useParams } from 'react-router-dom'
+
+import Logo from '../assets/tmdb.svg'
+import { MoviesContext } from '../context/movies.context';
 
 export default function MovieTopRatedPage() {
     //pagina actual, pasada por parametro
@@ -13,14 +16,8 @@ export default function MovieTopRatedPage() {
     const MIN_PAGE = 1
     const MAX_PAGE = 490
     
-
-    const options = {
-      method: 'GET',
-      headers: {
-        accept: 'application/json',
-        Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5NjViZjE0YmE0OTEzMjliODcxYTg2ZWE1YzcyMzJmYyIsIm5iZiI6MTczMzc2Mjk5MS40Nywic3ViIjoiNjc1NzFmYWY2ZTBiZWQyNjZiN2ZiNmQyIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.zdI3vhG-kXsBScl9BgVqCGp9c-d2Rq0PUMcZObbFQJk'
-      }
-    };
+    //se obtiene options del contexto
+    const {options} = useContext(MoviesContext)
     
     // al cargar el componente, cargar las peliculas
     useEffect(()=> {
@@ -30,20 +27,24 @@ export default function MovieTopRatedPage() {
       .catch(err => setError(err));
     }, [page])
     
-
     //navegación usando rutas paramétricas
     const navigate = useNavigate()
     const goTo = (page) => {
         page > 0 && navigate(`/page/${page}`)
     }
-
-    
-    // console.log(movieData.results)
     
     return (
       <section className='text-white'>
-        {/* <h1>Movie App</h1> */}
-        <h2 className='text-left text-3xl font-semibold p-3 my-3'>Top Rated Movies</h2>
+        <nav className='flex justify-between items-center'>
+            <h2 className='text-left text-3xl font-semibold py-10 my-3 flex items-center gap-6'> 
+                <img src={Logo} className='w-28'></img>
+                Top Rated Movies
+            </h2>
+           <div>
+                <Link to={"/search"} className='px-3 py-2 rounded bg-[#01b3e49a]'>Search</Link>
+
+           </div>
+        </nav>
         <div className='grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-1 gap-5'>
           {
             error ? (
