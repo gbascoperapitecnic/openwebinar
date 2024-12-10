@@ -42,7 +42,6 @@ export default function MovieTopRatedPage() {
             </h2>
            <div>
                 <Link to={"/search"} className='px-3 py-2 rounded bg-[#01b3e49a]'>Search</Link>
-
            </div>
         </nav>
         <div className='grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-1 gap-5'>
