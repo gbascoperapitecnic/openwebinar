@@ -35,17 +35,17 @@ export default function SearchPage() {
   
   return (
     <section className="text-white py-10 px-2 flex flex-col items-start gap-20">
-        <form className="space-x-3" onSubmit={handleSearch}>
-            <input type="text" id="search" placeholder="Search by name" name="name" className="p-2 rounded-md text-black" onChange={(e) => setSearch(e.target.value)}/>
-            <button type="submit" className="bg-[#01b3e49a] px-3 py-2 rounded ">Search</button>
-        </form>
+        <div className="w-full flex justify-between">
+            <form className="space-x-3 " onSubmit={handleSearch}>
+                <input type="text" id="search" placeholder="Search by name" name="name" className="p-2 rounded-md text-black" onChange={(e) => setSearch(e.target.value)}/>
+                <button type="submit" className="bg-[#01b3e49a] px-3 py-2 rounded ">Search</button>
+            </form>
+            <Link to={"/page/1"} className='px-3 py-2 rounded bg-[#01b3e49a]'>Volver</Link>
+        </div>
         {
             data && (
                 <>
-                    <nav className="flex justify-between items-center w-full">
-                        <h1 className="text-3xl font-semibold">Found: {data.length}</h1>
-                        <Link to={"/page/1"} className='px-3 py-2 rounded bg-[#01b3e49a]'>Volver</Link>
-                    </nav>
+                    <h1 className="text-3xl font-semibold">Found: {data.length}</h1>
                     <div className='grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-1 gap-5'>
                         {
                             data.map((movie) => 
