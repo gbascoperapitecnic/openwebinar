@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import MovieCard from '../components/MovieCard';
-import { MoveLeftIcon, MoveRightIcon } from 'lucide-react';
+import { ArrowLeftFromLine, ArrowRightFromLine, MoveLeftIcon, MoveRightIcon } from 'lucide-react';
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
 export default function MovieTopRatedPage() {
@@ -9,7 +9,11 @@ export default function MovieTopRatedPage() {
 
     const [movieData, setMovieData] = useState([])
     const [error, setError] = useState("")
+
+    const MIN_PAGE = 1
+    const MAX_PAGE = 490
     
+
     const options = {
       method: 'GET',
       headers: {
@@ -34,10 +38,10 @@ export default function MovieTopRatedPage() {
     }
 
     
-    // console.log(movieData)
+    // console.log(movieData.results)
     
     return (
-      <section className=''>
+      <section className='text-white'>
         {/* <h1>Movie App</h1> */}
         <h2 className='text-left text-3xl font-semibold p-3 my-3'>Top Rated Movies</h2>
         <div className='grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-1 gap-5'>
@@ -59,16 +63,26 @@ export default function MovieTopRatedPage() {
         </div>
     
         <div className='flex justify-center items-center p-7 gap-3'>
+          <button className='rounded-md bg-white text-black p-2' onClick={()=> goTo(1)}>
+            <ArrowLeftFromLine/>
+          </button>
           <button 
-            className='rounded-md border bg-black text-white p-2 disabled:opacity-55'
+            className='rounded-md bg-white text-black p-2 disabled:opacity-55'
             onClick={()=> goTo(Number(page)-1)}
-            disabled={page == 1}
+            disabled={page == MIN_PAGE}
           >
             <MoveLeftIcon/>
           </button>
           <p className='text-xl'>{page}</p>
-          <button className='rounded-md border bg-black text-white p-2' onClick={()=> goTo(Number(page)+1)}>
+          <button
+            className='rounded-md bg-white text-black p-2 disabled:opacity-55' 
+            onClick={() => goTo(Number(page)+1)}
+            disabled={page == MAX_PAGE}
+          >
             <MoveRightIcon/>
+          </button>
+          <button className='rounded-md bg-white text-black p-2' onClick={()=> goTo(490)}>
+            <ArrowRightFromLine/>
           </button>
         </div>
       </section>
