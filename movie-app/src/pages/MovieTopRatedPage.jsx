@@ -27,11 +27,15 @@ export default function MovieTopRatedPage() {
       .catch(err => setError(err));
     }, [page])
     
+
+    console.log(movieData)
+
     //navegación usando rutas paramétricas
     const navigate = useNavigate()
     const goTo = (page) => {
         page > 0 && navigate(`/page/${page}`)
     }
+
     
     return (
       <section className='text-white'>

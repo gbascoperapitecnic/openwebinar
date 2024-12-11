@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 
 export default function ErrorPage() {
+  
+  //comprobar si el usuario esta logueado, para redirigirlo a login o home
+
   return (
     <div className="min-h-screen flex items-center flex-col gap-4 justify-center">
         <h1 className="text-3xl text-white">Error, parece que esta página no existe.</h1>
