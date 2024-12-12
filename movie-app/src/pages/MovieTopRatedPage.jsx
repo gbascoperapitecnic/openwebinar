@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import MovieCard from '../components/MovieCard';
 import { ArrowLeftFromLine, ArrowRightFromLine, MoveLeftIcon, MoveRightIcon } from 'lucide-react';
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 
 import Logo from '../assets/tmdb.svg'
 import { MoviesContext } from '../context/movies.context';
@@ -34,6 +34,13 @@ export default function MovieTopRatedPage() {
     const navigate = useNavigate()
     const goTo = (page) => {
         page > 0 && navigate(`/page/${page}`)
+    }
+
+
+    //si el usuario no tiene acceso, redirigirlo a login
+    const {hasAcces, setHasAccess} = useContext(MoviesContext)
+    if (!hasAcces) {
+      return <Navigate to={"/"}/>
     }
 
     

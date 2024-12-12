@@ -11,7 +11,7 @@ export default function MovieCard({movie}) {
 
   return (
     <>
-        <div className="rounded-lg shadow-2xl overflow-hidden bg-[#1A1A1A] hover:opacity-40 transition ease-in-out cursor-pointer" onClick={handleOpen}>
+        <div className="rounded-lg shadow-2xl overflow-hidden bg-[#0b101d] hover:opacity-40 transition ease-in-out">
             <img src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`} alt="" />
 
             <div className='p-3 space-y-3'>
@@ -21,7 +21,7 @@ export default function MovieCard({movie}) {
                         <Star fill='#f5c518' color='#f5c518'/>
                         {movie.vote_average}
                     </span>
-                    <button>
+                    <button onClick={handleOpen}>
                         <InfoIcon/>
                     </button>
 

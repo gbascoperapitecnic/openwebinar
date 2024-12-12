@@ -11,7 +11,7 @@ function App() {
       <Route path="/" element={<LoginPage/>}/>
       <Route path="/page/:page" element={<MovieTopRatedPage/>} />
       <Route path="/search" element={<SearchPage/>} />
-      <Route path="/*" element={<ErrorPage/>} />
+      <Route path="*" element={<ErrorPage/>} />
     </Routes>
   )
 }

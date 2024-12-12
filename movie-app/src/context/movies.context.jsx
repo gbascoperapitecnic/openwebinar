@@ -1,9 +1,9 @@
-import { createContext } from "react";
+import { createContext, useState } from "react";
+
 
 const MoviesContext = createContext()
 
 function MoviesProviderWrapper(props) {
-  
     const options = {
         method: 'GET',
         headers: {
@@ -91,8 +91,16 @@ function MoviesProviderWrapper(props) {
         }
     ]
 
+
+    const credentials = {
+        username: "gab",
+        password: 123
+    }
+
+    const [hasAccess, setHasAccess] = useState(false)
+
     return (
-        <MoviesContext.Provider value={{options, genres}}>
+        <MoviesContext.Provider value={{options, genres, credentials, hasAccess, setHasAccess}}>
             {props.children}
         </MoviesContext.Provider>
     )
