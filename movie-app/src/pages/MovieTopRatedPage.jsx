@@ -108,7 +108,7 @@ export default function MovieTopRatedPage() {
 
     return (
       <section className='text-white'>
-        <nav className='flex justify-between items-center'>
+        <nav className='flex justify-between items-center flex-wrap'>
             <h2 className='text-left text-3xl font-semibold py-10 my-3 flex items-center gap-6'> 
               <Link to={"/page/1"}>
                 <img src={Logo} className='w-28'></img>
