@@ -4,22 +4,24 @@ import { useContext, useEffect, useState } from 'react';
 import { MoviesContext } from '../context/movies.context';
 import {cn} from '../lib/utils'
 
-export default function ModalComponent({open, handleClose, movie}) {
-  const {genres} = useContext(MoviesContext)
+export default function ModalComponent({open, handleClose, movie, isMovie}) {
+  const {movieGenres, tvGenres} = useContext(MoviesContext)
 
   const [genresMovie, setGenresMovie] = useState([])
+  const [genresSerie, setGenresSerie] = useState([])
+
 
   useEffect(() => {
-    getGenresMovie(movie.genre_ids)
+    getGenresMovie(movie.genre_ids) 
   }, [])
 
   const getGenresMovie = (genreIds)  => { 
-    //obtener objetos de los ids pasados
     const genreTitles = genreIds.map((id) => {
-      return genres.find(obj => obj.id == id)
+      return isMovie ? movieGenres.find(obj => obj.id == id) : tvGenres.find(obj => obj.id == id)
     });
 
-    setGenresMovie(genreTitles)
+    isMovie ? setGenresMovie(genreTitles) : setGenresSerie(genreTitles)
+
   }
 
   return (
@@ -35,10 +37,23 @@ export default function ModalComponent({open, handleClose, movie}) {
 
       <div className='info-movie flex items-center justify-between'>
         <div className='flex flex-col'>
-          <h1 className='text-5xl mb-3 font-semibold'>{movie.title}</h1>
-          <p>Título original: {movie.original_title}</p>
-          <p>Idioma original: {movie.original_language}</p>
-          <p>Fecha de estreno: {movie.release_date}</p>
+          {
+            isMovie ? (
+              <>
+                <h1 className='text-5xl mb-3 font-semibold'>{movie.title}</h1>
+                <p>Título original: {movie.original_title}</p>
+                <p>Idioma original: {movie.original_language}</p>
+                <p>Fecha de estreno: {movie.release_date}</p>
+              </>
+            ) : (
+              <>
+                <h1 className='text-5xl mb-3 font-semibold'>{movie.name}</h1>
+                <p>Título original: {movie.original_name}</p>
+                <p>Idioma original: {movie.original_language}</p>
+                <p>Fecha de estreno: {movie.first_air_date}</p>
+              </>
+            )
+          }
         </div>
 
         <div className='p-1'>
@@ -77,9 +92,17 @@ export default function ModalComponent({open, handleClose, movie}) {
       <div className=' my-5'>
         <div className='flex items-center gap-3 my-5 text-white'>
           {
-            genresMovie && (
-              genresMovie.map((genre) => 
-                <p key={genre.id} className='border rounded-full py-1 px-4 hover:opacity-25 transition-opacity cursor-pointer'>{genre.name}</p>
+            isMovie ? (
+              genresMovie && (
+                genresMovie.map((genre) => 
+                  <p key={genre.id} className='border rounded-full py-1 px-4 hover:opacity-25 transition-opacity cursor-pointer'>{genre.name}</p>
+                )
+              )
+            ): (
+              genresSerie && (
+                genresSerie.map((genre) => 
+                  <p key={genre.id} className='border rounded-full py-1 px-4 hover:opacity-25 transition-opacity cursor-pointer'>{genre.name}</p>
+                )
               )
             )
           }

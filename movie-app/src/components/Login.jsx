@@ -21,7 +21,6 @@ export default function Login() {
 
   const [username, setUsername] = useState("")
   const [pass, setPass] = useState("")
-  const [error, setError] = useState("")
 
 
   const {hasAccess, setHasAccess} = useContext(MoviesContext)
@@ -39,7 +38,7 @@ export default function Login() {
     e.preventDefault()
 
     if (credentials.username === username && credentials.password == Number(pass)) {
-      navigate('/page/1')
+      navigate('/home')
       setHasAccess(true)
 
     }else{

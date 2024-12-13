@@ -1,12 +1,20 @@
 import { useContext, useEffect, useState } from 'react';
 import MovieCard from '../components/MovieCard';
-import { ArrowLeftFromLine, ArrowRightFromLine, MoveLeftIcon, MoveRightIcon } from 'lucide-react';
+import { ArrowLeftFromLine, ArrowRightFromLine, LucideSearchX, MoveLeftIcon, MoveRightIcon } from 'lucide-react';
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 
 import Logo from '../assets/tmdb.svg'
 import { MoviesContext } from '../context/movies.context';
 
-export default function MovieTopRatedPage() {
+export default function MoviePage() {
+   
+    const {credentials} = useContext(MoviesContext)
+
+    if (!credentials.hasAccess) {
+      return <Navigate to={"/"}/>
+    }
+  
+
     //pagina actual, pasada por parametro
     const {page} = useParams() 
 
@@ -33,27 +41,16 @@ export default function MovieTopRatedPage() {
       }
     }, [page])
     
-    console.log(movieData)
 
     //navegación usando rutas paramétricas
     const navigate = useNavigate()
     const goTo = (page) => {
-      page > 0 && navigate(`/page/${page}`)
+      page > 0 && navigate(`/movies/page/${page}`)
     }
-
-    //si el usuario no tiene acceso, redirigirlo a login
-    const {hasAcces} = useContext(MoviesContext)
-    useEffect(() => {
-      if (!hasAcces) {
-        <Navigate to={"/"}/>
-      }
-
-    }, [hasAcces])
 
 
     // Search by title
     const [search, setSearch] = useState("")
-    const [data, setData] = useState(null)
     const [err, setErr] = useState("")
 
 
@@ -99,10 +96,11 @@ export default function MovieTopRatedPage() {
     }
 
     const volverAHome = () => {
-      setIsSearching(false)
-      fetchMovieTopRated()
-      goTo(1)
-      setSearch("")
+        setIsSearching(false)
+    //   fetchMovieTopRated()
+    //   goTo(1)
+    //   setSearch("")
+        navigate("/home")
     } 
 
 
@@ -110,7 +108,7 @@ export default function MovieTopRatedPage() {
       <section className='text-white'>
         <nav className='flex justify-between items-center flex-wrap'>
             <h2 className='text-left text-3xl font-semibold py-10 my-3 flex items-center gap-6'> 
-              <Link to={"/page/1"}>
+              <Link to={"/movies/page/1"}>
                 <img src={Logo} className='w-28'></img>
               </Link>
               Top Rated Movies
@@ -118,7 +116,7 @@ export default function MovieTopRatedPage() {
            <div className='flex gap-2 items-center'>
               <form className="space-x-3 " onSubmit={handleSearch}>
                 <input 
-                  type="text" 
+                  type="search" 
                   id="search" 
                   placeholder="Search by name" 
                   name="name" 
@@ -126,53 +124,72 @@ export default function MovieTopRatedPage() {
                   onChange={(e) => setSearch(e.target.value)}
                   value={search}
                 />
-                <button type="submit" className="bg-[#01b3e49a] px-3 py-2 rounded ">Search</button>
+                <button type="submit" className="bg-[#01b3e49a] px-3 py-2 rounded disabled:opacity-35" disabled={!search}>Search</button>
               </form>
               <button className='bg-[#01b3e49a] px-3 py-2 rounded' onClick={volverAHome}>Volver</button>
+              <Link className='bg-[#01b3e49a] px-3 py-2 rounded' to={"/"} onClick={() => setHasAccess(false)}>Salir</Link>
            </div>
         </nav>
-        <h1 className="text-3xl mb-10 opacity-70">Found: <span className='font-bold'>{totalMovies}</span> movies</h1>
-        <div className='grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-1 gap-5'>
-          {
-            error ? (
-              <p>Error: {err}</p>
-            ) : (
-              movieData && (
-                movieData.map((movie) => 
-                  <MovieCard
-                    key={movie.id}
-                    movie={movie}
-                  />
-                ) 
-              )
-    
-            )
-          }
-        </div>
-    
-        <div className='flex justify-center items-center p-7 gap-3'>
-          <button className='rounded-md bg-white text-black p-2' onClick={()=> goTo(MIN_PAGE)}>
-            <ArrowLeftFromLine/>
-          </button>
-          <button 
-            className='rounded-md bg-white text-black p-2 disabled:opacity-55'
-            onClick={()=> goTo(Number(page)-1)}
-            disabled={page == MIN_PAGE}
-          >
-            <MoveLeftIcon/>
-          </button>
-          <p className='text-xl'>{page}</p>
-          <button
-            className='rounded-md bg-white text-black p-2 disabled:opacity-55' 
-            onClick={() => goTo(Number(page)+1)}
-            disabled={page == maxPage}
-          >
-            <MoveRightIcon/>
-          </button>
-          <button className='rounded-md bg-white text-black p-2' onClick={()=> goTo(maxPage)}>
-            <ArrowRightFromLine/>
-          </button>
-        </div>
+
+        {
+          !totalMovies ? (
+            <div className='flex justify-center flex-col items-center gap-2 h-[45rem]'>
+              <LucideSearchX size={60}/>
+              <p>No se ha podido encontrar ninguna película con tu búsqueda</p>
+            </div>
+          ) : (
+            <>
+              <h1 className="text-3xl mb-10 opacity-70">Found: <span className='font-bold'>{totalMovies}</span> movies</h1>
+              <div className='grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-1 gap-5'>
+                {
+                  error ? (
+                    <p>Error: {err}</p>
+                  ) : (
+                    movieData && (
+                      movieData.map((movie) => 
+                        <MovieCard
+                          key={movie.id}
+                          movie={movie}
+                          isMovie={true}
+                        />
+                      ) 
+                    )
+                  )
+                }
+              </div>
+          
+              <div className='flex justify-center items-center p-7 gap-3 mt-5'>
+                <button 
+                  className='rounded-md bg-indigo-800 text-white p-2' 
+                  onClick={()=> goTo(MIN_PAGE)}
+                >
+                  <ArrowLeftFromLine/>
+                </button>
+                <button 
+                  className='rounded-md bg-indigo-800 text-white p-2 disabled:opacity-45'
+                  onClick={()=> goTo(Number(page)-1)}
+                  disabled={page == MIN_PAGE}
+                >
+                  <MoveLeftIcon/>
+                </button>
+                <p className='text-xl'>{page}</p>
+                <button
+                  className='rounded-md bg-indigo-800 text-white p-2 disabled:opacity-55' 
+                  onClick={() => goTo(Number(page)+1)}
+                  disabled={page == maxPage}
+                >
+                  <MoveRightIcon/>
+                </button>
+                <button 
+                  className='rounded-md bg-indigo-800 text-white p-2' 
+                  onClick={()=> goTo(maxPage)}
+                >
+                  <ArrowRightFromLine/>
+                </button>
+              </div>
+            </>
+          )
+        }
       </section>
     )    
 }

@@ -2,9 +2,10 @@ import { InfoIcon, Star } from 'lucide-react';
 import { useState } from 'react';
 import ModalComponent from './ModalComponent';
 
-export default function MovieCard({movie}) {
+export default function MovieCard({movie, isMovie}) {
 
-  const releasedDate = new Date(movie.release_date)  
+  const releasedDate = isMovie ? new Date(movie.release_date) : new Date(movie.first_air_date) 
+
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
@@ -15,7 +16,14 @@ export default function MovieCard({movie}) {
             <img src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`} alt="" />
 
             <div className='p-3 space-y-3'>
-                <p className='text-left text-lg font-semibold'>{movie.title} ({releasedDate.getFullYear()})</p>
+                {
+                    isMovie ? (
+                        <p className='text-left text-lg font-semibold'>{movie.title} ({releasedDate.getFullYear()})</p>
+                    ) : (
+                        <p className='text-left text-lg font-semibold'>{movie.name} ({releasedDate.getFullYear()})</p>
+                    )
+                }
+                
                 <div className='flex justify-between'>
                     <span className='flex gap-2 font-semibold'>
                         <Star fill='#f5c518' color='#f5c518'/>
@@ -33,6 +41,7 @@ export default function MovieCard({movie}) {
             open={open}
             handleClose={handleClose}
             movie={movie}
+            isMovie={isMovie}
         />
     </>
   )

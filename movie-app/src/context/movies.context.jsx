@@ -12,7 +12,7 @@ function MoviesProviderWrapper(props) {
         }
     };
 
-    const genres = [
+    const movieGenres = [
         {
         id: 28,
         "name": "Action"
@@ -91,8 +91,78 @@ function MoviesProviderWrapper(props) {
         }
     ]
 
+    const tvGenres = [
+        {
+        "id": 10759,
+        "name": "Action & Adventure"
+        },
+        {
+        "id": 16,
+        "name": "Animation"
+        },
+        {
+        "id": 35,
+        "name": "Comedy"
+        },
+        {
+        "id": 80,
+        "name": "Crime"
+        },
+        {
+        "id": 99,
+        "name": "Documentary"
+        },
+        {
+        "id": 18,
+        "name": "Drama"
+        },
+        {
+        "id": 10751,
+        "name": "Family"
+        },
+        {
+        "id": 10762,
+        "name": "Kids"
+        },
+        {
+        "id": 9648,
+        "name": "Mystery"
+        },
+        {
+        "id": 10763,
+        "name": "News"
+        },
+        {
+        "id": 10764,
+        "name": "Reality"
+        },
+        {
+        "id": 10765,
+        "name": "Sci-Fi & Fantasy"
+        },
+        {
+        "id": 10766,
+        "name": "Soap"
+        },
+        {
+        "id": 10767,
+        "name": "Talk"
+        },
+        {
+        "id": 10768,
+        "name": "War & Politics"
+        },
+        {
+        "id": 37,
+        "name": "Western"
+        }
+    ]
 
+
+
+    //cambian --> 10768, 10767, 10766, 10765, 10764, 10762, 10763, 10759
     const credentials = {
+        hasAccess: true,
         username: "gab",
         password: 123
     }
@@ -100,7 +170,7 @@ function MoviesProviderWrapper(props) {
     const [hasAccess, setHasAccess] = useState(false)
 
     return (
-        <MoviesContext.Provider value={{options, genres, credentials, hasAccess, setHasAccess}}>
+        <MoviesContext.Provider value={{options, movieGenres, tvGenres, credentials, hasAccess, setHasAccess}}>
             {props.children}
         </MoviesContext.Provider>
     )
