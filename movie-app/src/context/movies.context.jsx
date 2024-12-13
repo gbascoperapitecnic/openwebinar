@@ -4,6 +4,8 @@ import { createContext, useState } from "react";
 const MoviesContext = createContext()
 
 function MoviesProviderWrapper(props) {
+    const [err, setErr] = useState("")
+
     const options = {
         method: 'GET',
         headers: {
@@ -158,19 +160,51 @@ function MoviesProviderWrapper(props) {
         }
     ]
 
-
-
-    //cambian --> 10768, 10767, 10766, 10765, 10764, 10762, 10763, 10759
     const credentials = {
         hasAccess: true,
         username: "gab",
         password: 123
     }
 
+    const fetchSearch = async (type) => {
+        try {
+            if (type === "movie" || type === "tv") {
+                const response = await fetch(`https://api.themoviedb.org/3/search/${type}?query=${search}&include_adult=false&language=en-US&page=${page}`, options)
+                const data = await response.json()                
+            }
+
+            type === "movie" ? setMovieData(data.results) : setSerieData(data.results) //
+
+            setMaxPage(data.total_pages)
+            setTotalMovies(data.total_results)
+            setError("")
+    
+        } catch (error) {
+            setError(error)
+            console.log(error)
+        }
+    }
+
+    const fetchTopRated = async (type) => {
+        try {
+            const response = await fetch(`https://api.themoviedb.org/3/${type}/top_rated?language=en-US&page=${page}`, options)
+            const data = await response.json()
+
+            type === "movie" ? setMovieData(data.results) : setSerieData(data.results) //nota: se podria manejar un solo estado y no 2?
+
+            setMaxPage(data.total_pages)
+            setTotalMovies(data.total_results)
+            setError("")
+        } catch (error) {
+            setErr(error)
+            console.log(error)
+        }
+    }
+
     const [hasAccess, setHasAccess] = useState(false)
 
     return (
-        <MoviesContext.Provider value={{options, movieGenres, tvGenres, credentials, hasAccess, setHasAccess}}>
+        <MoviesContext.Provider value={{options, movieGenres, tvGenres, credentials, hasAccess, setHasAccess, fetchSearch, fetchTopRated}}>
             {props.children}
         </MoviesContext.Provider>
     )

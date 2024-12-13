@@ -8,7 +8,7 @@ import { MoviesContext } from '../context/movies.context';
 
 export default function MoviePage() {
    
-    const {credentials} = useContext(MoviesContext)
+    const {credentials, options} = useContext(MoviesContext)
 
     if (!credentials.hasAccess) {
       return <Navigate to={"/"}/>
@@ -27,7 +27,6 @@ export default function MoviePage() {
     const [maxPage, setMaxPage] = useState(1)
     
     //se obtiene options del contexto
-    const {options} = useContext(MoviesContext)
 
     const [totalMovies, setTotalMovies] = useState(1)
 
@@ -48,7 +47,6 @@ export default function MoviePage() {
       page > 0 && navigate(`/movies/page/${page}`)
     }
 
-
     // Search by title
     const [search, setSearch] = useState("")
     const [err, setErr] = useState("")
@@ -60,7 +58,6 @@ export default function MoviePage() {
       setIsSearching(true)
       fetchSearch()
 
-      //redirigir a la pagina1 cuando el usuario busca una pelicula
       goTo(1)
     }
   
@@ -79,6 +76,7 @@ export default function MoviePage() {
         console.log(error)
       }
     }
+    
   
     const fetchMovieTopRated = async () => {
       try {
@@ -97,9 +95,6 @@ export default function MoviePage() {
 
     const volverAHome = () => {
         setIsSearching(false)
-    //   fetchMovieTopRated()
-    //   goTo(1)
-    //   setSearch("")
         navigate("/home")
     } 
 
