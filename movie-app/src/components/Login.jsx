@@ -53,7 +53,7 @@ export default function Login() {
   }
 
   return (
-    <form className="mx-auto flex flex-col shadow-2xl rounded-xl px-6 py-9 min-w-[27rem] bg-[#0b101d]" onSubmit={handleSubmit}>
+    <form className="mx-auto flex flex-col shadow-2xl rounded-xl px-6 py-9 max-w-[30rem] bg-[#0b101d] w-full" onSubmit={handleSubmit}>
       <div className="w-full flex justify-center pb-5">
         <a href="https://www.themoviedb.org/?language=es" target="_blank">
           <img src={LogoShort} alt="" className="w-28"/>

@@ -3,8 +3,8 @@ import MovieCard from '../components/MovieCard';
 import { ArrowLeftFromLine, ArrowRightFromLine, LucideSearchX, MoveLeftIcon, MoveRightIcon } from 'lucide-react';
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 
-import Logo from '../assets/tmdb.svg'
 import { MoviesContext } from '../context/movies.context';
+import Navbar from '../components/Navbar';
 
 
 export default function TvPage() {
@@ -100,33 +100,15 @@ export default function TvPage() {
     } 
  
 
-
     return (
       <section className='text-white'>
-        <nav className='flex justify-between items-center flex-wrap'>
-            <h2 className='text-left text-3xl font-semibold py-10 my-3 flex items-center gap-6'> 
-              <Link to={"/tv/page/1"}>
-                <img src={Logo} className='w-28'></img>
-              </Link>
-              Top Rated TV Series
-            </h2>
-           <div className='flex gap-2 items-center'>
-              <form className="space-x-3 " onSubmit={handleSearch}>
-                <input 
-                  type="search" 
-                  id="search" 
-                  placeholder="Search by name" 
-                  name="name" 
-                  className="p-2 rounded-md text-black" 
-                  onChange={(e) => setSearch(e.target.value)}
-                  value={search}
-                />
-                <button type="submit" className="bg-[#01b3e49a] px-3 py-2 rounded disabled:opacity-35" disabled={!search}>Search</button>
-              </form>
-              <button className='bg-[#01b3e49a] px-3 py-2 rounded' onClick={volverAHome}>Volver</button>
-              <Link className='bg-[#01b3e49a] px-3 py-2 rounded' to={"/"} onClick={() => setHasAccess(false)}>Salir</Link>
-           </div>
-        </nav>
+        <Navbar 
+          handleSearch={handleSearch}
+          setSearch={setSearch}
+          search={search} 
+          volverAHome={volverAHome}
+          isMovie={false}
+        />
 
         {
           !totalSeries ? (
@@ -136,7 +118,7 @@ export default function TvPage() {
             </div>
           ) : (
             <>
-              <h1 className="text-3xl mb-10 opacity-70">Found: <span className='font-bold'>{totalSeries}</span> movies</h1>
+              <h1 className="text-3xl mb-10 opacity-70">Found: <span className='font-bold'>{totalSeries}</span> TV Series</h1>
               <div className='grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-1 gap-5'>
                 {
                   error ? (

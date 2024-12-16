@@ -18,16 +18,16 @@ export default function MovieCard({movie, isMovie}) {
             <div className='p-3 space-y-3'>
                 {
                     isMovie ? (
-                        <p className='text-left text-lg font-semibold'>{movie.title} ({releasedDate.getFullYear()})</p>
+                        <p className='text-left text-lg font-semibold'> {movie.title} {movie.release_date && `(${releasedDate.getFullYear()})`}</p>
                     ) : (
-                        <p className='text-left text-lg font-semibold'>{movie.name} ({releasedDate.getFullYear()})</p>
+                        <p className='text-left text-lg font-semibold'>{movie.name} {movie.first_air_date && `(${releasedDate.getFullYear()})`}</p>
                     )
                 }
                 
                 <div className='flex justify-between'>
                     <span className='flex gap-2 font-semibold'>
                         <Star fill='#f5c518' color='#f5c518'/>
-                        {movie.vote_average}
+                        {(Math.round(movie.vote_average * 100) / 100).toFixed(2)}
                     </span>
                     <button onClick={handleOpen}>
                         <InfoIcon/>

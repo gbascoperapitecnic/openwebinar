@@ -4,7 +4,7 @@ export default function HomePage() {
    
   return (
     <section className="text-white h-screen flex items-center justify-center">
-      <div className='p-4 flex flex-col w-[30rem]'>
+      <div className='p-4 flex flex-col max-w-[30rem] w-full'>
         <h1 className='text-5xl'>Bienvenido!</h1>
         <p className='mb-4 text-lg'>Qué quieres buscar?</p>
         <div className='flex gap-4 justify-center text-lg'>
