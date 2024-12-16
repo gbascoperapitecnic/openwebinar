@@ -7,6 +7,9 @@ body{
   margin: 0 auto;
   text-align: center;
 }
+ul li{
+  list-style-type: circle;
+}
 .logo {
   height: 6em;
   padding: 1.5em;

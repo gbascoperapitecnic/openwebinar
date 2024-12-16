@@ -1,104 +1,49 @@
 import { useContext, useEffect, useState } from 'react';
 import MovieCard from '../components/MovieCard';
-import { ArrowLeftFromLine, ArrowRightFromLine, LucideSearchX, MoveLeftIcon, MoveRightIcon } from 'lucide-react';
+import { ArrowLeftFromLine, ArrowRightFromLine, ArrowUp, LucideSearchX, MoveLeftIcon, MoveRightIcon } from 'lucide-react';
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 
 import { MoviesContext } from '../context/movies.context';
 import Navbar from '../components/Navbar';
 
+import useMovieSerie from '../hooks/useMovieSerie';
 
 export default function TvPage() {
    
+    const {page, search, setIsSearching, movieData,  setMovieData, serieData, navigate, setSerieData, error, isSearching, MIN_PAGE, maxPage, totalMovies, totalSeries, setSearch, err, fetchSearch, fetchTopRated, volverAHome, scrollToTop} = useMovieSerie()
+
+
     const {credentials} = useContext(MoviesContext)
 
     if (!credentials.hasAccess) {
       return <Navigate to={"/"}/>
     }
     
-    //pagina actual, pasada por parametro
-    const {page} = useParams() 
-
-    const [serieData, setSerieData] = useState([])
-    const [error, setError] = useState("")
-
-    const [isSearching, setIsSearching] = useState(false)
-
-    const MIN_PAGE = 1
-    const [maxPage, setMaxPage] = useState(1)
-    
-    //se obtiene options del contexto
     const {options} = useContext(MoviesContext)
 
-    const [totalSeries, setTotalseries] = useState(1)
-
-    // al cargar el componente, cargar las peliculas
+   
     useEffect(() => {
-      //comprobar si el usuario ha hecho submit en el search para llamar a una api o otra 
       if (!isSearching) {
-        fetchMovieTopRated()
+        fetchTopRated("tv")
       }else{
-        fetchSearch()
+        fetchSearch("tv")
       }
     }, [page])
-    
 
-    //navegación usando rutas paramétricas
-    const navigate = useNavigate()
+    
     const goTo = (page) => {
       page > 0 && navigate(`/tv/page/${page}`)
     }
-
-
-    // Search by title
-    const [search, setSearch] = useState("")
-    const [err, setErr] = useState("")
-
-
+    
     const handleSearch = (e) => {
       e.preventDefault()
 
       setIsSearching(true)
-      fetchSearch()
+      fetchSearch("tv")
 
       goTo(1)
     }
   
-    const fetchSearch = async () => {
-      try {
-        const response = await fetch(`https://api.themoviedb.org/3/search/tv?query=${search}&include_adult=false&language=en-US&page=${page}`, options)
-        const data = await response.json()
-
-        setSerieData(data.results)
-        setMaxPage(data.total_pages)
-        setTotalseries(data.total_results)
-        setError("")
-  
-      } catch (error) {
-        setError(error)
-        console.log(error)
-      }
-    }
-  
-    const fetchMovieTopRated = async () => {
-      try {
-        const response = await fetch(`https://api.themoviedb.org/3/tv/top_rated?language=en-US&page=${page}`, options)
-        const data = await response.json()
-
-        setSerieData(data.results)
-        setMaxPage(data.total_pages)
-        setTotalseries(data.total_results)
-        setError("")
-      } catch (error) {
-        setErr(error)
-        console.log(error)
-      }
-    }
-
-    const volverAHome = () => {
-        setIsSearching(false)
-        navigate("/home")
-    } 
- 
 
     return (
       <section className='text-white'>
@@ -169,6 +114,9 @@ export default function TvPage() {
             </>
           )
         }
+        <button className='text-white fixed right-4 bottom-3 rounded-full p-1 bg-indigo-900' onClick={scrollToTop}>
+          <ArrowUp size={35}/>
+        </button>
       </section>
     )    
 }
