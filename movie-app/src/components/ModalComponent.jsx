@@ -74,10 +74,6 @@ export default function ModalComponent({open, handleClose, movie, isMovie}) {
     backgroundAttachment: "fixed"
   }
 
-  // trailer.length && console.log(trailer[0].key, trailer[0].name)
-  // trailer.length && console.log(trailer[0])
-
-  // providers && console.log(providers)
 
   return (
     <Modal
@@ -213,11 +209,16 @@ export default function ModalComponent({open, handleClose, movie, isMovie}) {
               <div className='py-5'>
                 <h3 className='semibold text-2xl'>Dónde ver: </h3>
                 {
-                  providers && (
+                  providers ? (
                     <Providers
                       providers={providers}
                     />
-                  ) 
+                  )  : (
+                    <div className='flex items-center gap-2 py-2'>
+                      <CircleHelp size={35} className=' mt-2'/>
+                      <span>Actualmente no hay opciones disponibles para streaming.</span>
+                    </div>
+                  )
                 }
                 
               </div>
