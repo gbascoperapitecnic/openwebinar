@@ -102,7 +102,7 @@ export default function ModalComponent({open, handleClose, movie, isMovie}) {
                       <h1 className='text-5xl mb-3 font-semibold'>{movie.title}</h1>
                       <ul className='p-0 ml-4'>
                         <li>Título original: {movie.original_title}</li>
-                        <li>Idioma original: {movie.original_language}</li>
+                        <li>Idioma original: {(movie.original_language).toUpperCase()}</li>
                         <li>Fecha de estreno: {movie.release_date ? movie.release_date : "Not found"}</li>
                         <li>Id: {movie.id}</li>
                       </ul>
