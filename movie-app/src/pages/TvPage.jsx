@@ -7,6 +7,7 @@ import { MoviesContext } from '../context/movies.context';
 import Navbar from '../components/Navbar';
 
 import useMovieSerie from '../hooks/useMovieSerie';
+import Footer from '../components/Footer';
 
 export default function TvPage() {
    
@@ -117,6 +118,7 @@ export default function TvPage() {
         <button className='text-white fixed right-4 bottom-3 rounded-full p-1 bg-indigo-900' onClick={scrollToTop}>
           <ArrowUp size={35}/>
         </button>
+        <Footer/>
       </section>
     )    
 }

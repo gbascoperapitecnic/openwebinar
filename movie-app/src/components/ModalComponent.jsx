@@ -5,6 +5,7 @@ import { MoviesContext } from '../context/movies.context';
 import Fade from '@mui/material/Fade';
 import Backdrop from '@mui/material/Backdrop';
 import {cn} from '../lib/utils'
+import Providers from './Providers';
 
 export default function ModalComponent({open, handleClose, movie, isMovie}) {
   const {movieGenres, tvGenres} = useContext(MoviesContext)
@@ -19,9 +20,12 @@ export default function ModalComponent({open, handleClose, movie, isMovie}) {
   const {options} = useContext(MoviesContext)
 
 
+  const [providers, setProviders] = useState(null)
+
   useEffect(() => {
     getGenresMovie(movie.genre_ids) 
     fetchVideoTrailer()
+    fetchProviders()
   }, [])
 
   const getGenresMovie = (genreIds)  => { 
@@ -48,6 +52,20 @@ export default function ModalComponent({open, handleClose, movie, isMovie}) {
     }
   }
 
+  const fetchProviders = async () => {
+    try {
+      const response = await fetch(`https://api.themoviedb.org/3/${isMovie ? "movie" : "tv"}/${movie.id}/watch/providers`, options)
+      const data = await response.json()
+  
+      // setProviders(data.results.find((provider) => provider.))
+      setProviders(data.results.ES)
+        
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
   const backgroundImageStyle = movie.backdrop_path ? `url('https://image.tmdb.org/t/p/original${movie.backdrop_path}')` : 'none'  
   const stylesBackground = {
     background: backgroundImageStyle,
@@ -58,6 +76,8 @@ export default function ModalComponent({open, handleClose, movie, isMovie}) {
 
   // trailer.length && console.log(trailer[0].key, trailer[0].name)
   // trailer.length && console.log(trailer[0])
+
+  // providers && console.log(providers)
 
   return (
     <Modal
@@ -74,7 +94,7 @@ export default function ModalComponent({open, handleClose, movie, isMovie}) {
       }}
     >
       <Fade in={open}>
-        <div id='modalContainer' className={cn('shadow-2xl h-[40rem] p-6 overflow-auto rounded-xl w-[60rem] relative text-white m-3 md:overflow-hidden md:h-[auto] bg-fixed', !movie.backdrop_path && 'bg-black')} style={stylesBackground} >
+        <div id='modalContainer' className={cn('shadow-2xl h-[40rem] p-6 overflow-auto rounded-xl w-[60rem] relative text-white m-3 md:h-[50rem] bg-fixed', !movie.backdrop_path && 'bg-black')} style={stylesBackground} >
           
           <div style={{
             content: '',
@@ -189,6 +209,18 @@ export default function ModalComponent({open, handleClose, movie, isMovie}) {
                 }
               </div>
               <p className='text-lg'>{movie.overview}</p>
+              
+              <div className='py-5'>
+                <h3 className='semibold text-2xl'>Dónde ver: </h3>
+                {
+                  providers && (
+                    <Providers
+                      providers={providers}
+                    />
+                  ) 
+                }
+                
+              </div>
             </div>
           </div>
         </div>

@@ -23,6 +23,7 @@ export default function useMovieSerie() {
     const [totalMovies, setTotalMovies] = useState(1)
     const [totalSeries, setTotalseries] = useState(1)
 
+
     //navegación usando rutas paramétricas
     const navigate = useNavigate()
 
@@ -78,6 +79,24 @@ export default function useMovieSerie() {
         }
     }
 
+    // https://api.themoviedb.org/3/tv/series_id/watch/providers
+    // https://api.themoviedb.org/3/movie/movie_id/watch/providers
+
+    // const fetchProviders = async (type, id) => {
+    //     try {
+    //         if (type === "movie" || type === "tv") {
+    //             const response = await fetch(`https://api.themoviedb.org/3/${type}/${id}/watch/providers`)
+    //             const data = await response.json()
+            
+    //             setProviders(data)
+    //         }else{
+    //             throw "Tipo Incorrecto"
+    //         }
+            
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
 
 
     const volverAHome = () => {
