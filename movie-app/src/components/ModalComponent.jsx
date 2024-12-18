@@ -7,6 +7,10 @@ import Backdrop from '@mui/material/Backdrop';
 import {cn} from '../lib/utils'
 import Providers from './Providers';
 
+import LiteYouTubeEmbed from 'react-lite-youtube-embed';
+import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css'
+
+
 export default function ModalComponent({open, handleClose, movie, isMovie}) {
   const {movieGenres, tvGenres} = useContext(MoviesContext)
 
@@ -14,6 +18,8 @@ export default function ModalComponent({open, handleClose, movie, isMovie}) {
   const [genresSerie, setGenresSerie] = useState([])
 
   const [trailer, setTrailer] = useState([])
+  const [info, setInfo] = useState(null)
+  // const [numSeasons, setNumSeasons] = useState(null)
 
   const [isWatchingTrailer, setIsWatchingTrailer] = useState(false)
 
@@ -26,6 +32,7 @@ export default function ModalComponent({open, handleClose, movie, isMovie}) {
     getGenresMovie(movie.genre_ids) 
     fetchVideoTrailer()
     fetchProviders()
+    // fetchDetails()
   }, [])
 
   const getGenresMovie = (genreIds) => { 
@@ -44,9 +51,8 @@ export default function ModalComponent({open, handleClose, movie, isMovie}) {
       const response = await fetch(`https://api.themoviedb.org/3/${isMovie ? "movie" : "tv"}/${movie.id}/videos?language=en-US`, options)
       const data = await response.json()   
       
-      setTrailer(data.results.filter((video) => video.type === "Trailer" || (video.official === true && video.type !== "Featurette"))) //introducir video si es trailer o cualquier otro video oficial: clip, opening...
+      setTrailer(data.results.filter((video) => ((video.site == "YouTube") && (video.type === "Trailer" || (video.official === true && video.type !== "Featurette"))))) //introducir video si es trailer o cualquier otro video oficial: clip, opening...
       
-
     } catch (error) {
       console.log(error)
     }
@@ -64,6 +70,23 @@ export default function ModalComponent({open, handleClose, movie, isMovie}) {
     }
   }
 
+  const fetchDetails = async () => {
+    try {
+      const response = await fetch(`https://api.themoviedb.org/3/${isMovie ? "movie" : "tv"}/${movie.id}?language=en-US`, options)
+      const data = await response.json()                
+
+      setInfo({
+        duracion: data.runtime,
+        numTemporadas: data.number_of_seasons,
+        numEpisodios: data.number_of_episodes
+      })
+
+
+    } catch (error) {
+      console.log(error)
+    }
+}
+
 
   const backgroundImageStyle = movie.backdrop_path ? `url('https://image.tmdb.org/t/p/original${movie.backdrop_path}')` : 'none'  
   const stylesBackground = {
@@ -73,6 +96,9 @@ export default function ModalComponent({open, handleClose, movie, isMovie}) {
     backgroundAttachment: "fixed"
   }
 
+  // trailer.length && console.log(trailer)
+
+  // info && console.log(info)
 
   return (
     <Modal
@@ -116,10 +142,13 @@ export default function ModalComponent({open, handleClose, movie, isMovie}) {
                     <>
                       <h1 className='text-5xl mb-3 font-semibold'>{movie.title}</h1>
                       <ul className='p-0 ml-4'>
-                        <li>Título original: {movie.original_title}</li>
-                        <li>Idioma original: {(movie.original_language).toUpperCase()}</li>
-                        <li>Fecha de estreno: {movie.release_date ? movie.release_date : "Not found"}</li>
-                        <li>Id: {movie.id}</li>
+                        <li><span className='opacity-60'>Título original:</span> {movie.original_title}</li>
+                        <li><span className='opacity-60'>Idioma original:</span> {(movie.original_language).toUpperCase()}</li>
+                        <li><span className='opacity-60'>Fecha de estreno:</span> {movie.release_date ? movie.release_date : "Not found"}</li>
+                        {/* <li><span className='opacity-60'>Id:</span> {movie.id}</li> */}
+                        {/* {info?.duracion && (
+                          <li><span className='opacity-60'>Duración: </span><span className='font-bold'>{info?.duracion}</span> m</li>
+                        )} */}
                       </ul>
                     </>
                   ) : (
@@ -129,7 +158,14 @@ export default function ModalComponent({open, handleClose, movie, isMovie}) {
                         <li>Título original: {movie.original_name}</li>
                         <li>Idioma original: {movie.original_language}</li>
                         <li>Fecha de estreno: {movie.first_air_date ? movie.first_air_date : "Not found"}</li>
-                        <li>Id: {movie.id}</li>
+                        {/* <li>Id: {movie.id}</li> */}
+                        {/* <li>Duración: {duracion}m</li> */}
+                        {/* {info?.numTemporadas && (
+                          <li><span>Número de Temporadas: </span><span>{info?.numTemporadas}</span></li>
+                        )}
+                        {info?.numEpisodios && (
+                          <li><span>Número de Episodios: </span><span>{info?.numEpisodios}</span></li>
+                        )} */}
                       </ul>
                     </>
                   )
@@ -137,11 +173,12 @@ export default function ModalComponent({open, handleClose, movie, isMovie}) {
               </div>
 
               <div className='p-1'>
-                <div className='flex flex-col items-center'>
-                  <div className='w-full '>
-                    <span className=''>Puntuación: <span className='text-xl font-semibold'>{movie.vote_average}</span>/10 <Star className='w-full' fill='rgb(245, 197, 24)' color='rgb(245, 197, 24)'/></span>
+                <div className='flex flex-col items-center '>
+                  <div className='w-full flex flex-col justify-center items-center'>
+                    <span className='text-2xl font-bold'>{movie.vote_average}<span className='text-lg opacity-60'>/10</span></span>
+                    <Star className='' fill='rgb(245, 197, 24)' color='rgb(245, 197, 24)'/>
+                    <span className='w-fit'>{movie.vote_count >= 1000 ? `${movie.vote_count/1000} k` : movie.vote_count }</span>
                   </div>
-                  <span className='w-fit'>{movie.vote_count >= 1000 ? `${movie.vote_count/1000} k` : movie.vote_count }</span>
                 </div>
               </div>
             </div>
@@ -151,7 +188,9 @@ export default function ModalComponent({open, handleClose, movie, isMovie}) {
                 <div className='col-span-1 hidden w-full h-full shadow-2xl md:block'>
                     {
                       !movie.poster_path ? (
-                        <CircleHelp className='border w-full'/>
+                        <div className='border h-full flex justify-center items-center bg-slate-300/65 rounded-md py-2'>
+                          <CircleHelp className='' size={45}/>
+                        </div>
                       ) : (
                         <img className='object-cover w-full h-full' src={`https://image.tmdb.org/t/p/original${movie.poster_path}`} alt='poster'/>
                       )
@@ -162,17 +201,22 @@ export default function ModalComponent({open, handleClose, movie, isMovie}) {
                     {
                       isWatchingTrailer ? (         
                         trailer.length && (
-                          <iframe width="" className='w-full' height="315" src={`https://www.youtube.com/embed/${trailer[0].key}?si=rFugqHHhzFmhyqmY&autoplay=1`} title="YouTube video player" style={{border: "0"}} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
+                          <LiteYouTubeEmbed 
+                            id={trailer[0].key}
+                            thumbnail={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
+                          />
                         )
                       ): (
                         <>
-                          {!movie.backdrop_path ? (
-                              <CircleHelp className='border w-full'/>
-                            ) : (
-                              <img className='object-cover w-full h-full' src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`} alt='backdrop'/>
+                          {movie.backdrop_path ? (
+                            <img className='object-cover w-full h-full' src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`} alt='backdrop'/>
+                          ) : (
+                            <div className='border h-full flex justify-center items-center bg-slate-300/65 rounded-md py-2'>
+                              <CircleHelp className='' size={45}/>
+                            </div>
                           )}
 
-                          {trailer.length &&  (
+                          {trailer.length > 0 &&  (
                             <div className='absolute left-3 bottom-3'>
                               <PlayCircle size={40} className='cursor-pointer' onClick={() => setIsWatchingTrailer(true)}/>
                             </div>
