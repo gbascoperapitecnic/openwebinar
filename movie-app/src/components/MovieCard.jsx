@@ -13,7 +13,7 @@ export default function MovieCard({movie, isMovie}) {
   return (
     <>
         <div className="rounded-lg shadow-2xl overflow-hidden bg-[#0b101d] lg:hover:opacity-40 transition ease-in-out">
-            <img src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`} alt="" />
+            <img src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`} alt="" loading='lazy'/>
 
             <div className='p-3 space-y-3'>
                 {

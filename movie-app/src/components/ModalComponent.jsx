@@ -28,7 +28,7 @@ export default function ModalComponent({open, handleClose, movie, isMovie}) {
     fetchProviders()
   }, [])
 
-  const getGenresMovie = (genreIds)  => { 
+  const getGenresMovie = (genreIds) => { 
     const genreTitles = genreIds.map((id) => {
       return isMovie ? movieGenres.find(obj => obj.id == id) : tvGenres.find(obj => obj.id == id)
     });
@@ -57,7 +57,6 @@ export default function ModalComponent({open, handleClose, movie, isMovie}) {
       const response = await fetch(`https://api.themoviedb.org/3/${isMovie ? "movie" : "tv"}/${movie.id}/watch/providers`, options)
       const data = await response.json()
   
-      // setProviders(data.results.find((provider) => provider.))
       setProviders(data.results.ES)
         
     } catch (error) {
@@ -190,16 +189,13 @@ export default function ModalComponent({open, handleClose, movie, isMovie}) {
               <div className='flex items-center gap-3 my-5 text-white flex-wrap'>
                 {
                   isMovie ? (
-                    genresMovie && (
-                      genresMovie.map((genre) => 
-                        <p key={genre.id} className='border rounded-full py-1 px-4 hover:opacity-25 transition-opacity cursor-pointer'>{genre.name}</p>
-                      )
+                    genresMovie?.map((genre) => 
+                      <p key={genre?.id} className='border rounded-full py-1 px-4 hover:opacity-25 transition-opacity cursor-pointer'>{genre?.name}</p>
                     )
+                    
                   ): (
-                    genresSerie && (
-                      genresSerie.map((genre) => 
-                        <p key={genre.id} className='border rounded-full py-1 px-4 hover:opacity-25 transition-opacity cursor-pointer'>{genre.name}</p>
-                      )
+                    genresSerie?.map((genre) => 
+                      <p key={genre?.id} className='border rounded-full py-1 px-4 hover:opacity-25 transition-opacity cursor-pointer'>{genre?.name}</p>
                     )
                   )
                 }

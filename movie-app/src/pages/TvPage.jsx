@@ -45,7 +45,6 @@ export default function TvPage() {
       goTo(1)
     }
   
-
     return (
       <section className='text-white'>
         <Navbar 
