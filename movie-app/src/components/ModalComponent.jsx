@@ -19,7 +19,7 @@ export default function ModalComponent({open, handleClose, movie, isMovie}) {
 
   const [trailer, setTrailer] = useState([])
   const [info, setInfo] = useState(null)
-  // const [numSeasons, setNumSeasons] = useState(null)
+  const [numSeasons, setNumSeasons] = useState(null)
 
   const [isWatchingTrailer, setIsWatchingTrailer] = useState(false)
 
@@ -32,7 +32,7 @@ export default function ModalComponent({open, handleClose, movie, isMovie}) {
     getGenresMovie(movie.genre_ids) 
     fetchVideoTrailer()
     fetchProviders()
-    // fetchDetails()
+    fetchDetails()
   }, [])
 
   const getGenresMovie = (genreIds) => { 
@@ -81,7 +81,6 @@ export default function ModalComponent({open, handleClose, movie, isMovie}) {
         numEpisodios: data.number_of_episodes
       })
 
-
     } catch (error) {
       console.log(error)
     }
@@ -96,9 +95,6 @@ export default function ModalComponent({open, handleClose, movie, isMovie}) {
     backgroundAttachment: "fixed"
   }
 
-  // trailer.length && console.log(trailer)
-
-  // info && console.log(info)
 
   return (
     <Modal
@@ -146,9 +142,9 @@ export default function ModalComponent({open, handleClose, movie, isMovie}) {
                         <li><span className='opacity-60'>Idioma original:</span> {(movie.original_language).toUpperCase()}</li>
                         <li><span className='opacity-60'>Fecha de estreno:</span> {movie.release_date ? movie.release_date : "Not found"}</li>
                         {/* <li><span className='opacity-60'>Id:</span> {movie.id}</li> */}
-                        {/* {info?.duracion && (
+                        {info?.duracion && (
                           <li><span className='opacity-60'>Duración: </span><span className='font-bold'>{info?.duracion}</span> m</li>
-                        )} */}
+                        )}
                       </ul>
                     </>
                   ) : (
@@ -160,12 +156,12 @@ export default function ModalComponent({open, handleClose, movie, isMovie}) {
                         <li>Fecha de estreno: {movie.first_air_date ? movie.first_air_date : "Not found"}</li>
                         {/* <li>Id: {movie.id}</li> */}
                         {/* <li>Duración: {duracion}m</li> */}
-                        {/* {info?.numTemporadas && (
+                        {info?.numTemporadas && (
                           <li><span>Número de Temporadas: </span><span>{info?.numTemporadas}</span></li>
                         )}
                         {info?.numEpisodios && (
                           <li><span>Número de Episodios: </span><span>{info?.numEpisodios}</span></li>
-                        )} */}
+                        )}
                       </ul>
                     </>
                   )
