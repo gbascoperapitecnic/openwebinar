@@ -37,12 +37,16 @@ export default function MovieCard({movie, isMovie}) {
             </div>
 
         </div>
-        <ModalComponent
-            open={open}
-            handleClose={handleClose}
-            movie={movie}
-            isMovie={isMovie}
-        />
+        {
+            open && (
+                <ModalComponent
+                    open={open}
+                    handleClose={handleClose}
+                    movie={movie}
+                    isMovie={isMovie}
+                />
+            )
+        }
     </>
   )
 }
