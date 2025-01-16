@@ -28,7 +28,7 @@ export default function Providers({providers}) {
                             <a href={provider[1]} className="rounded-full bg-indigo-900 px-5 py-2 my-3" target="_blank">Info</a>
                         ) : (
                             provider[1].map((providerInfo) => 
-                                <img src={`https://image.tmdb.org/t/p/original/${providerInfo.logo_path}`} key={uuidv4()} alt="logo-provider" className="w-14 mt-4 rounded-lg"/>
+                                <img src={`https://image.tmdb.org/t/p/original/${providerInfo.logo_path}`} key={uuidv4()} alt="logo-provider" className="w-14 mt-4 rounded-lg" loading='lazy'/>
                             )
                         )
                     }

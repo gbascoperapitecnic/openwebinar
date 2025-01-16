@@ -188,7 +188,7 @@ export default function ModalComponent({open, handleClose, movie, isMovie}) {
                           <CircleHelp className='' size={45}/>
                         </div>
                       ) : (
-                        <img className='object-cover w-full h-full' src={`https://image.tmdb.org/t/p/original${movie.poster_path}`} alt='poster'/>
+                        <img className='object-cover w-full h-full' src={`https://image.tmdb.org/t/p/original${movie.poster_path}`} loading='lazy' alt='poster'/>
                       )
                     }
                 </div>
@@ -205,7 +205,7 @@ export default function ModalComponent({open, handleClose, movie, isMovie}) {
                       ): (
                         <>
                           {movie.backdrop_path ? (
-                            <img className='object-cover w-full h-full' src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`} alt='backdrop'/>
+                            <img className='object-cover w-full h-full' src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`} alt='backdrop' loading='lazy'/>
                           ) : (
                             <div className='border h-full flex justify-center items-center bg-slate-300/65 rounded-md py-2'>
                               <CircleHelp className='' size={45}/>
